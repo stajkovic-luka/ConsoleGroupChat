@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import javax.net.ssl.SSLServerSocket;
 
 /**
  *
@@ -51,5 +48,9 @@ public class Server {
         }
     }
         
-    
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(1234);
+        Server server = new Server(serverSocket);
+        server.startServer();
+    }
 }
