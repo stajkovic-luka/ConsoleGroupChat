@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable{
 
     // Prikaz poruke svima u grupnom razgovoru
     // BITNO: Prikaz se vrsi svim klijentima, osim onom koji je poslao poruku!
-    private void broadcastMessage(String messageToBroadcast) {
+    public void broadcastMessage(String messageToBroadcast) {
         for (ClientHandler clientHandler : clientHandlers) {
             try{
                 if(!clientHandler.clientUsername.equals(clientUsername)){
@@ -73,9 +73,27 @@ public class ClientHandler implements Runnable{
         }
     }
     
-    // Zatvara se aktivne tokove, konekcije
-    private void closeAll(Socket socket1, BufferedReader bufferedReader1, BufferedWriter bufferedWriter1) {
-
-    }
     
+    public void removeClientHandler(){
+        clientHandlers.remove(this);
+        broadcastMessage("SERVER: " + clientUsername + " has left the chat.");
+    } 
+    
+    // Zatvara se aktivne tokove, konekcije
+    public void closeAll(Socket socket1, BufferedReader bufferedReader1, BufferedWriter bufferedWriter1) {
+        removeClientHandler();
+        try{
+            if(bufferedReader != null){
+                bufferedReader.close();
+            }
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+    }
 }
